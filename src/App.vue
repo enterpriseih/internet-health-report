@@ -1,12 +1,12 @@
 <template>
-    <q-layout view="hHh LpR fff" id="app" class="IHR_minimum-width bg-white">
-        <router-view name="header" />
-        <q-page-container class="IHR_minimum-width">
-            <router-view />
-            <div id="IHR_last-element">&nbsp;</div>
-        </q-page-container>
-        <router-view name="footer" />
-    </q-layout>
+  <q-layout view="hHh LpR fff" id="app" class="IHR_minimum-width bg-white">
+    <router-view :login="login" name="header" />
+    <q-page-container class="IHR_minimum-width">
+      <router-view @isLogin="isLogin" />
+      <div id="IHR_last-element">&nbsp;</div>
+    </q-page-container>
+    <router-view name="footer" />
+  </q-layout>
 </template>
 <script>
 import languages from 'quasar/lang/index.json'
@@ -14,13 +14,19 @@ import routerBase from '@/router'
 
 // subset of router, see router.js
 export default {
-    name: 'Default',
-    components: {},
-    data() {
-        return {
-            text: '',
-        }
-    },
+  name: 'APP-Default',
+  components: {},
+  data() {
+    return {
+      text: '',
+      login: false
+    }
+  },
+  methods: {
+    isLogin(data) {
+      this.login = data
+    }
+  }
 }
 </script>
 <style lang="stylus">

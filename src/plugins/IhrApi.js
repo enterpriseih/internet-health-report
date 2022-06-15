@@ -51,7 +51,7 @@ const COOKIE_DURATION = 1 * 24 * 60 * 60 * 1000 //TODO synch with server
  */
 function createCookie(name, value) {
     let date = new Date()
-    date.setTime(date.getTime() + (value != null ? COOKIE_DURATION : -100))
+    date.setTime(date.getTime() + (value != null ? COOKIE_DURATION : 60 * 60 * 1000))
     document.cookie = `${name}=${value}; expires=${date.toGMTString()}; path=/`
 }
 /**
@@ -152,9 +152,9 @@ const IhrApi = {
                         this._update_base()
                         return false
                     }
-                    this.headers['Authorization'] = `Token ${readCookie('token')}`
+                    this.headers['Authorization'] = `${readCookie('token')}`
                     this._update_base()
-                    return true
+                    return this.user
                 },
                 _update_base() {
                     this.axios_base = axios.create({
@@ -356,11 +356,48 @@ const IhrApi = {
                     )
                 },
                 // User management section
-                userSignIn(email, password, recaptcha, successCallback, errorCallback) {
+                userSignIn(email, password, code, successCallback, errorCallback) {
+                    this._generic('user/register', 'post', { email: email, password: password, code: code }, successCallback, errorCallback)
+                },
+                sendforgetpasswordemail(email, successCallback, errorCallback) {
+                    this._generic('user/sendforgetpasswordemail', 'post', { email: email }, successCallback, errorCallback)
+                },
+                sendsendregisteremail(email, successCallback, errorCallback) {
+                    this._generic('user/sendregisteremail', 'post', { email: email }, successCallback, errorCallback)
+                },
+                userLogin(email, password, successCallback, errorCallback) {
                     this._generic(
-                        'user/sign_in/',
+                        'user/login',
                         'post',
-                        { email: email, password: password, recaptcha: recaptcha },
+                        { email: email, password: password },
+                        result => {
+                            if (result.code === 200) {
+                                this._save_user(email, result.token)
+                            }
+                            if (successCallback instanceof Function) successCallback(result)
+                        },
+                        errorCallback
+                    )
+                },
+                userLogout(successCallback, errorCallback) {
+                    // this._check_authorization(errorCallback) &&
+                    this._generic(
+                        'user/logout',
+                        'post',
+                        {},
+                        result => {
+                            if (result.code === 200) {
+                            }
+                            if (successCallback instanceof Function) successCallback(result)
+                        },
+                        errorCallback
+                    )
+                },
+                userforgetpassword(email, password, code, successCallback, errorCallback) {
+                    this._generic(
+                        'user/forgetpassword',
+                        'post',
+                        { email: email, password: password, code: code },
                         successCallback,
                         errorCallback
                     )
@@ -390,42 +427,7 @@ const IhrApi = {
                             errorCallback
                         )
                 },
-                userLogin(email, password, successCallback, errorCallback) {
-                    this._generic(
-                        'user/login/',
-                        'post',
-                        { email: email, password: password },
-                        result => {
-                            this._save_user(email, result.token)
-                            if (successCallback instanceof Function) successCallback(result)
-                        },
-                        errorCallback
-                    )
-                },
-                userLogout(successCallback, errorCallback) {
-                    this._check_authorization(errorCallback) &&
-                        this._generic(
-                            'user/logout/',
-                            'post',
-                            {},
-                            result => {
-                                this._save_user(null)
-                                if (successCallback instanceof Function) successCallback(result)
-                            },
-                            errorCallback
-                        )
-                },
-                userResetPasswordRequest(email, recaptcha, successCallback, errorCallback) {
-                    this._generic(
-                        'user/request_reset_password/',
-                        'post',
-                        { email: email, recaptcha: recaptcha },
-                        result => {
-                            successCallback(result)
-                        },
-                        errorCallback
-                    )
-                },
+
                 userResetPassword(email, password, token, successCallback, errorCallback) {
                     this._generic(
                         'user/reset_password/',
@@ -439,13 +441,13 @@ const IhrApi = {
                     )
                 },
                 userVerifyToken: async function () {
-                    try {
-                        await this.axios_base.get('user/verify_token/')
-                        return true
-                    } catch (err) {
-                        this._save_user(null)
-                    }
-                    return false
+                    // try {
+                    //     await this.axios_base.get('user/verify_token/')
+                    //     return true
+                    // } catch (err) {
+                    //     this._save_user(null)
+                    // }
+                    // return false
                 },
                 /**
                  * Change user credential

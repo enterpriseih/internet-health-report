@@ -8,8 +8,8 @@
         </template>
       </q-banner>
     </transition>
-    <h1>{{ title }}</h1>
-    <div class="shadow-2" id="IHR_sig-in-form-container" v-if="!emailSent">
+    <h1>{{ $t("sigIn.register") }}</h1>
+    <div class="shadow-2" id="IHR_sig-in-form-container" >
       <q-input
         v-model="email"
         label="email"
@@ -50,7 +50,7 @@
           <q-icon name="fa fa-check" />
         </template>
         <template v-slot:append>
-          <q-btn color="secondary" no-caps>send</q-btn>
+          <q-btn @click="sendCode" color="secondary" no-caps>send</q-btn>
         </template>
       </q-input>
       <div
@@ -76,11 +76,23 @@
       </div>
       <q-btn color="positive" @click="validateAndSend">register</q-btn>
     </div>
-    <div class="shadow-2" id="IHR_confirm-your-email" v-else>
-      <div>{{ $t("sigIn.emailSentTo") }}</div>
-      <div id="IHR_email-confirmation">{{ email }}</div>
-      <div>{{ $t("sigIn.pleaseFollowTheLink") }}</div>
-    </div>
+    <q-dialog
+      v-model="emailSent"
+    >
+      <q-card style="width: 300px">
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          {{message}}
+        </q-card-section>
+
+        <q-card-actions align="right" class="bg-white text-teal">
+          <q-btn flat label="OK" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -95,7 +107,8 @@ export default {
       email: "",
       password: "",
       recaptcha: "",
-      code:"",
+      code: "",
+      message:"",
       emailSent: false,
       isPwd: true,
       recaptcha_loaded: false,
@@ -130,24 +143,31 @@ export default {
         this.$ihr_api.userSignIn(
           this.email,
           this.password,
-          this.recaptcha,
-          () => {
-            this.emailSent = true;
-            this.password = "";
+          this.code,
+          (res) => {
+            this.emailSent = true
+            this.message = res.msg
           },
           error => {
-            console.error(error); //TODO bettere error handling
-            console.log(error.detail);
+            this.emailSent = true
+            this.message = error.detail
           }
         );
+    },
+    sendCode() {
+      this.$ihr_api.sendsendregisteremail(this.email,
+        (res) => {
+          this.emailSent = true
+          this.message = res.msg
+        },
+        (error) => {
+            this.emailSent = true
+            this.message = error.detail
+          })
     }
+
   },
   computed: {
-    title() {
-      return this.emailSent
-        ? this.$t("sigIn.thankYou")
-        : this.$t("sigIn.register");
-    }
   }
 };
 </script>

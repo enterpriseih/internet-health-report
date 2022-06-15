@@ -24,6 +24,7 @@
         "ForgottenPassword": "forgot your password?",
         "select": "Select",
         "login": "Login",
+        "logout": "Logout",
         "register": "Register"
     },
     "footer": {

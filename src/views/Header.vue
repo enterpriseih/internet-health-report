@@ -10,40 +10,50 @@
           </router-link>
         </q-item>
         <network-search-bar class="col-3 q-px-sm" />
-        <div
-          class="IHR_menu-entries text-body2 text-weight-bold row items-center no-wrap"
-        >
-        <q-btn-group
-            flat 
-            :key="item.entryName"
-            v-for="item in simple_menu"
-            >
-            <q-btn flat v-if="item.options == null" :label="$t(item.entryName)" :to="{ name: item.routeName }"/>
-            <q-btn-dropdown flat :label="$t(item.entryName)" v-else menu-anchor="bottom left" menu-self="top left" >
-                <q-list class="rounded-borders text-white bg-primary" bordered separator padding >
-                    <q-item clickable v-close-popup 
-                        :key="option.entryName"
-                        v-for="option in item.options"
-                        :to="{ name: option.routeName }"
-                        active-class="text-grey"
-                        >
-                        <q-item-section>
-                            <q-item-label class="text-bold">{{ $t(option.entryName) }}</q-item-label>
-                            <q-item-label class="text-grey" caption lines="2">{{ $t(option.summary) }}</q-item-label>
-                        </q-item-section>
-                    </q-item>
-                </q-list>
+        <div class="IHR_menu-entries text-body2 text-weight-bold row items-center no-wrap">
+          <q-btn-group flat :key="item.entryName" v-for="item in simple_menu">
+            <q-btn flat v-if="item.options == null" :label="$t(item.entryName)" :to="{ name: item.routeName }" />
+            <q-btn-dropdown flat :label="$t(item.entryName)" v-else menu-anchor="bottom left" menu-self="top left">
+              <q-list class="rounded-borders text-white bg-primary" bordered separator padding>
+                <q-item clickable v-close-popup :key="option.entryName" v-for="option in item.options"
+                  :to="{ name: option.routeName }" active-class="text-grey">
+                  <q-item-section>
+                    <q-item-label class="text-bold">{{ $t(option.entryName) }}</q-item-label>
+                    <q-item-label class="text-grey" caption lines="2">{{ $t(option.summary) }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
             </q-btn-dropdown>
-        </q-btn-group>
-           <div style="position:absolute;right:30px;line-height:68px">
-            <q-btn  flat :label="$t('header.login')" :to="{ name: 'login' }"/>
-            <q-btn  flat :label="$t('header.register')" :to="{ name: 'register' }"/>
-           </div>
+          </q-btn-group>
+          <div v-if="!user || user === null" style="position:absolute;right:30px;line-height:68px">
+            <q-btn flat :label="$t('header.login')" :to="{ name: 'login' }" />
+            <q-btn flat :label="$t('header.register')" :to="{ name: 'register' }" />
+          </div>
+          <div v-else style="position:absolute;right:30px;line-height:68px">
+            <q-btn flat :label="user" />
+            <q-btn flat :label="$t('header.logout')" @click="logout" />
+          </div>
         </div>
       </div>
       <!--Log in /Log out stuff here-->
     </q-toolbar>
+    <q-dialog v-model="emailSent">
+      <q-card style="width: 300px">
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          {{ message }}
+        </q-card-section>
+
+        <q-card-actions align="right" class="bg-white text-teal">
+          <q-btn flat label="OK" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-header>
+
 </template>
 
 <script>
@@ -58,31 +68,31 @@ const simple_menu = [
     entryName: "header.reports",
     routeName: "global_report",
     options: [
-        {
-            entryName: "header.globalReport",
-            routeName: "global_report",
-            summary: "Alarms reported across all networks"
-        },
-        {
-            entryName: "header.countryReport",
-            routeName: "countries",
-            summary: "Overview of Internet ressources per country"
-        },
-        {
-            entryName: "header.networkReport",
-            routeName: "networks",
-            summary: "Details for a single network (AS or IXP)"
-        },
-        {
-            entryName: "header.rovReport",
-            routeName: "rov",
-            summary: "Route Origin Validation of ressources seen on BGP"
-        },
-        {
-            entryName: "header.covid19",
-            routeName: "covid19",
-            summary: "RTT analysis during national lockdowns"
-        }
+      {
+        entryName: "header.globalReport",
+        routeName: "global_report",
+        summary: "Alarms reported across all networks"
+      },
+      {
+        entryName: "header.countryReport",
+        routeName: "countries",
+        summary: "Overview of Internet ressources per country"
+      },
+      {
+        entryName: "header.networkReport",
+        routeName: "networks",
+        summary: "Details for a single network (AS or IXP)"
+      },
+      {
+        entryName: "header.rovReport",
+        routeName: "rov",
+        summary: "Route Origin Validation of ressources seen on BGP"
+      },
+      {
+        entryName: "header.covid19",
+        routeName: "covid19",
+        summary: "RTT analysis during national lockdowns"
+      }
     ]
   },
   {
@@ -109,38 +119,42 @@ export default {
   components: {
     NetworkSearchBar
   },
+  props: ["login"],
+  watch: {
+    login(newV, oldV) {
+      if (newV) {
+        this.user = this.$ihr_api._get_user()
+      }
+    }
+  },
   data() {
     return {
       text: "",
+      user: '',
       simple_menu: simple_menu,
       sidebarOpened: false,
-      loginError: false
+      emailSent: false,
+      message: "",
     };
   },
   mounted() {
     document.title = "Internet Health Report";
+    this.user = this.$ihr_api._get_user()
   },
   methods: {
     expandSidebar() {
       this.sidebarOpened = !this.sidebarOpened;
     },
-    login(email, password) {
-      if (
-        this.$ihrStyle.validateEmail(email) &&
-        this.$ihrStyle.validatePassword(password)
-      ) {
-        this.$ihr_api.userLogin(
-          email,
-          password,
-          () => {},
-          () => {
-            this.loginError = true;
-          }
-        );
-      }
-    },
     logout() {
-      this.$ihr_api.userLogout();
+      this.$ihr_api.userLogout(
+        res => {
+          this.emailSent = true
+          this.message = res.msg
+        },
+        error => {
+          this.emailSent = true
+          this.message = error.detail
+        });
     }
   }
 };
