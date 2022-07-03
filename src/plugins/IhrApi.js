@@ -387,6 +387,7 @@ const IhrApi = {
                         {},
                         result => {
                             if (result.code === 200) {
+                                this._save_user(null)
                             }
                             if (successCallback instanceof Function) successCallback(result)
                         },

@@ -25,7 +25,7 @@
               </q-list>
             </q-btn-dropdown>
           </q-btn-group>
-          <div v-if="!user || user === null" style="position:absolute;right:30px;line-height:68px">
+          <div v-if="!user || user === 'null'" style="position:absolute;right:30px;line-height:68px">
             <q-btn flat :label="$t('header.login')" :to="{ name: 'login' }" />
             <q-btn flat :label="$t('header.register')" :to="{ name: 'register' }" />
           </div>
@@ -150,6 +150,7 @@ export default {
         res => {
           this.emailSent = true
           this.message = res.msg
+          this.user = null
         },
         error => {
           this.emailSent = true

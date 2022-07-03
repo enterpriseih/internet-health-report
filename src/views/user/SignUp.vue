@@ -26,21 +26,21 @@
           <q-icon :name="isPwd ? 'far fa-eye' : 'far fa-eye-slash'" class="cursor-pointer" @click="isPwd = !isPwd" />
         </template>
       </q-input>
-      <div :style="{
+      <!-- <div :style="{
         height: recaptcha_loaded ? 'auto' : '90px',
         position: 'relative'
       }">
-        <!-- <vue-recaptcha
+        <vue-recaptcha
           :sitekey="$ihrStyle.recaptchaKey"
           id="IHR_sig-in-captcha"
           @verify="verify"
           @expired="expired"
           :render="ensureCss"
-        ></vue-recaptcha> -->
+        ></vue-recaptcha>
         <q-inner-loading :showing="!recaptcha_loaded">
           <q-spinner-gears size="50px" color="primary" />
         </q-inner-loading>
-      </div>
+      </div> -->
       <!-- <div>{{ $t("sigIn.mailWillBeSent") }}</div> -->
       <div style="display:flex;justify-content:space-between;">
         <router-link to="register">Register</router-link>
