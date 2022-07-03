@@ -398,7 +398,7 @@ const IhrApi = {
                     this._generic(
                         'user/forgetpassword',
                         'post',
-                        { email: email, password: password, code: code },
+                        { email: email, new_password: password, code: code },
                         successCallback,
                         errorCallback
                     )

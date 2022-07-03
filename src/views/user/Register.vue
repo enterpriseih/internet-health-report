@@ -26,7 +26,7 @@
           <q-icon :name="isPwd ? 'far fa-eye' : 'far fa-eye-slash'" class="cursor-pointer" @click="isPwd = !isPwd" />
         </template>
       </q-input>
-      <q-input v-show="isShowCode" v-model="code" label="code" :rules="[
+      <q-input v-show="isShowCode" v-model="code" label="verification code" :rules="[
         val => $ihrStyle.validateCode(val) || $t('forms.weakCode')
       ]">
         <template v-slot:prepend>
@@ -131,6 +131,9 @@ export default {
           (res) => {
             this.emailSent = true
             this.message = res.msg
+            if (res.code === 200) {
+              this.$router.push('/en-us/login')
+            }
           },
           error => {
             this.emailSent = true
