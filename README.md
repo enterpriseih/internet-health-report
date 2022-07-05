@@ -1,6 +1,5 @@
 # ihr-website
 
-Internet Health Report website (https://ihr.iijlab.net)
 
 ## Requirements
 - nodejs
