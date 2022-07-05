@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh LpR fff" id="app" class="IHR_minimum-width bg-white">
-    <router-view :login="login" name="header" />
+    <router-view :login="user" @logout="logout" name="header" />
     <q-page-container class="IHR_minimum-width">
       <router-view @isLogin="isLogin" />
       <div id="IHR_last-element">&nbsp;</div>
@@ -19,12 +19,16 @@ export default {
   data() {
     return {
       text: '',
-      login: false
+      user: '',
     }
   },
   methods: {
-    isLogin(data) {
-      this.login = data
+    isLogin() {
+      this.user = this.$ihr_api._get_user()
+      console.log(this.user)
+    },
+    logout() {
+      this.user = ''
     }
   }
 }

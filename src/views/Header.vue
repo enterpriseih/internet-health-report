@@ -122,15 +122,15 @@ export default {
   props: ["login"],
   watch: {
     login(newV, oldV) {
-      if (newV) {
-        this.user = this.$ihr_api._get_user()
-      }
-    }
+      console.log(111, newV, oldV)
+      this.user = newV
+    },
+    deep: true
   },
   data() {
     return {
       text: "",
-      user: '',
+      user: "",
       simple_menu: simple_menu,
       sidebarOpened: false,
       emailSent: false,
@@ -150,7 +150,10 @@ export default {
         res => {
           this.emailSent = true
           this.message = res.msg
-          this.user = null
+          if (res.code === 200) {
+            this.user = ''
+            this.$emit('logout')
+          }
         },
         error => {
           this.emailSent = true
