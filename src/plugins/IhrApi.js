@@ -355,7 +355,14 @@ const IhrApi = {
                         errorCallback
                     )
                 },
+
                 // User management section
+                searchChannel(type, content, successCallback, errorCallback) {
+                    this._generic('user/searchchannel', 'post', { type: type, content: content }, successCallback, errorCallback)
+                },
+                saveChannel(channel, successCallback, errorCallback) {
+                    this._generic('user/savechannel', 'post', { channel: channel }, successCallback, errorCallback)
+                },
                 userSignIn(email, password, code, successCallback, errorCallback) {
                     this._generic('user/register', 'post', { email: email, password: password, code: code }, successCallback, errorCallback)
                 },

@@ -30,7 +30,7 @@
             <q-btn flat :label="$t('header.register')" :to="{ name: 'register' }" />
           </div>
           <div v-else style="position:absolute;right:30px;line-height:68px">
-            <q-btn flat :label="user" />
+            <q-btn flat :label="user" :to="{ name: 'select' }" />
             <q-btn flat :label="$t('header.logout')" @click="logout" />
           </div>
         </div>
@@ -106,10 +106,6 @@ const simple_menu = [
   {
     entryName: "header.contact",
     routeName: "contact"
-  },
-  {
-    entryName: "header.select",
-    routeName: "select"
   },
 ];
 
