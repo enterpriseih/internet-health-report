@@ -7,7 +7,7 @@
                 <div v-else class="tag">
                     <el-tag v-for="(item, index) in tags" :key="index" type="warning" style="margin: 5px 8px"
                         @close="handleClose(item)" :closable="flag">
-                        {{ item.value.split(' ')[0] }}
+                        {{ item.channel.split(' ')[0] }}
                     </el-tag>
                 </div>
                 <q-btn v-if="flag" class="subbnt" color="orange-5" label="subscribe" @click="subscribe()" no-caps />
@@ -88,62 +88,6 @@ export default {
             flag: true,
             alert: false,
             dataList: [],
-            countryList: [
-                // 'Mauritius (MU)',
-                // 'Virgin Islands, British (VG)',
-                // 'Guyana (GY)',
-                // 'French Polynesia (PF)',
-                // 'Martinique (MQ)',
-                // 'Cambodia (KH)',
-                // 'Holy See (VA)',
-                // 'Guinea (GN)',
-                // 'Mali (ML)',
-                // 'Oman (OM)',
-                // 'Jamaica (JM)',
-                // 'Bonaire Sint Eustatius and Saba (BQ)',
-                // 'Taiwan Province of China (TW)',
-                // 'Pakistan (PK)',
-                // 'Afghanistan (AF)',
-                // 'Malawi (MW)',
-                // 'Eritrea (ER)',
-                // 'Georgia (GE)',
-                // 'Barbados (BB)',
-                // 'Solomon Islands (SB)',
-            ],
-            cityList: [
-                // 'Norfolk Virginia ',
-                // 'New Orleans, Louisiana',
-                // 'Buffalo New York',
-                // 'Santa Fe New Mexico',
-                // 'San Francisco California',
-                // 'Chicago Illinois',
-                // 'Indianapolis Indiana',
-                // 'Nashville Tennessee',
-                // 'Greenville South Carolina',
-                // 'Rochester New York',
-            ],
-            networkList: [
-                // 'ASN2667777',
-                // 'ASN396411 MICROPACT-ASH-DC, US',
-                // 'ASN140549 ',
-                // 'ASN140813 DSTEL-AS-VN DIGITAL SOLUTION AND TELECOMMUNICATIONS SERVICE JOINT STOCK COMPANY, VN',
-                // 'ASN210449 SKYLARNET-NL SkylarNET B.V, NL',
-                // 'ASN149496 UKHBDLTD-AS-AP UKH BD Ltd, BD',
-                // 'ASN64791 -Private Use AS-, ZZ',
-                // 'ASN231 MISU-231, US',
-                // 'ASN1 LVLT-1, US',
-                // 'ASN39152 AS-, ZZ',
-                // 'ASN202558 AS-, ZZ',
-                // 'ASN266392 Agility Telecom Ltda, BR',
-                // 'ASN394450 MCKINSEY-US-ADP, US',
-                // 'ASN394452 MCKINSEY-US-AWP, US',
-                // 'ASN395370 MCKINSEY-US-AMP, US',
-                // 'ASN208373 SBFF-ASN Sodertorns Brandforsvarsforbund, SE',
-                // 'ASN173 ERX-ECLNET Electrical Communications Laboratories, JP',
-                // 'ASN204516 CAPLASER CAPLASER SA, FR',
-                // 'ASN137844 SIGMAHEALTHCARE-AS-AP SIGMA HEALTHCARE LIMITED, AU',
-                // 'ASN278 Universidad Nacional Autonoma de Mexico, MX',
-            ],
         }
     },
     mounted() {
@@ -162,7 +106,7 @@ export default {
         },
         select(label) {
             if (this.flag) {
-                this.tags.push({ value: label, model: 'normal' })
+                this.tags.push({ channel: label, frequency: 'normal' })
             }
             this.alert = true
         },

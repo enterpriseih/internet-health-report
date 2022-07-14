@@ -8,8 +8,8 @@
             <div class="verbosity">
                 <p class="title">Verbosity</p>
                 <div v-for="(item, index) in dataList" :key="index" class="item">
-                    <el-tag type="warning">{{ item.value.split(' ')[0] }}</el-tag>
-                    <q-btn-toggle v-model="item.model" rounded unelevated class="toggle" toggle-color="positive"
+                    <el-tag type="warning">{{ item.channel.split(' ')[0] }}</el-tag>
+                    <q-btn-toggle v-model="item.frequency" rounded unelevated class="toggle" toggle-color="positive"
                         :options="[
                             { label: 'low', value: 'low' },
                             { label: 'normal', value: 'normal' },
@@ -54,13 +54,8 @@ export default {
     },
     methods: {
         saveChannel() {
-            let arr = []
-            for (let i = 0; i < this.dataList.length; i++) {
-                arr.push(this.dataList[i].value)
-            }
-            this.$ihr_api.saveChannel(arr,
+            this.$ihr_api.saveChannel(this.dataList,
                 res => {
-                    this.emailSent = true
                     this.message = res.msg
                     if (res.code === 200) {
                         this.$router.push('/en-us')
