@@ -10,10 +10,12 @@
                         {{ item.channel.split(' ')[0] }}
                     </el-tag>
                 </div>
-                <q-btn v-if="flag" class="subbnt" color="orange-5" label="subscribe" @click="subscribe()" no-caps />
+                <q-btn v-if="flag" class="subbnt" color="orange-5" unelevated label="subscribe" @click="subscribe()"
+                    no-caps />
                 <div v-else class="group">
                     <q-btn outline color="orange-5" label="edit" @click="edit()" no-caps />
-                    <q-btn color="orange-5" label="setting" @click="toSetting()" no-caps />
+                    <q-btn color="orange-5" unelevated label="setting" @click="toSetting()" no-caps />
+
                 </div>
             </div>
             <div class="select">
@@ -57,19 +59,6 @@
                     </q-tab-panel>
                 </q-tab-panels>
             </div>
-            <q-dialog v-model="alert">
-                <q-card style="width: 300px">
-                    <q-card-section>
-                        <div class="text-h6">Alert</div>
-                    </q-card-section>
-
-                    <q-card-section class="q-pt-none"> Waiting to be developed </q-card-section>
-
-                    <q-card-actions align="right">
-                        <q-btn flat label="OK" color="primary" v-close-popup />
-                    </q-card-actions>
-                </q-card>
-            </q-dialog>
         </div>
         <div class="IHR_background" :style="{
             backgroundImage: 'url(' + require('@/assets/imgs/ihr_logo.svg') + ')',
@@ -86,7 +75,6 @@ export default {
             panel: 'country',
             word: '',
             flag: true,
-            alert: false,
             dataList: [],
         }
     },
@@ -108,7 +96,6 @@ export default {
             if (this.flag) {
                 this.tags.push({ channel: label, frequency: 'normal' })
             }
-            this.alert = true
         },
         handleClose(tag) {
             this.tags.splice(this.tags.indexOf(tag), 1)
@@ -173,23 +160,20 @@ export default {
 .subbnt {
     position: absolute;
     height: 38px;
-    top: 0;
-    bottom: 0;
+    bottom: 25px;
     right: 0;
-    margin: auto;
 }
 
 .group {
     display: flex;
-    flex-wrap: wrap;
-    align-content: space-between;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-end;
     position: absolute;
     height: 100px;
-    width: 100px;
-    top: 0;
-    bottom: 0;
+    width: 220px;
+    bottom: 25px;
     right: 0;
-    margin: auto;
 }
 
 .group .q-btn {

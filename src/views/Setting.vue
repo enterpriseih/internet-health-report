@@ -8,7 +8,9 @@
             <div class="verbosity">
                 <p class="title">Verbosity</p>
                 <div v-for="(item, index) in dataList" :key="index" class="item">
-                    <el-tag type="warning">{{ item.channel.split(' ')[0] }}</el-tag>
+                    <div style="width:200px">
+                        <el-tag type="warning">{{ item.channel.split(' ')[0] }}</el-tag>
+                    </div>
                     <q-btn-toggle v-model="item.frequency" rounded unelevated class="toggle" toggle-color="positive"
                         :options="[
                             { label: 'low', value: 'low' },
@@ -28,7 +30,7 @@
                 </q-card-section>
 
                 <q-card-section class="q-pt-none">
-                    {{ message }}
+                    save successfully
                 </q-card-section>
 
                 <q-card-actions align="right" class="bg-white text-teal">
@@ -46,7 +48,6 @@ export default {
         return {
             dataList: [],
             emailSent: false,
-            message: "",
         }
     },
     created() {
@@ -56,9 +57,9 @@ export default {
         saveChannel() {
             this.$ihr_api.saveChannel(this.dataList,
                 res => {
-                    this.message = res.msg
                     if (res.code === 200) {
-                        this.$router.push('/en-us')
+                        this.emailSent = true
+                        // this.$router.push('/en-us')
                     }
                 },
                 error => {
