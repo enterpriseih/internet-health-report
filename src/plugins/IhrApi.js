@@ -363,6 +363,9 @@ const IhrApi = {
                 saveChannel(channel, successCallback, errorCallback) {
                     this._generic('user/savechannel', 'post', { channel: channel }, successCallback, errorCallback)
                 },
+                searchChannelPrefix(type, content, successCallback, errorCallback) {
+                    this._generic('user/searchchannelprefix', 'post', { type: type, content: content }, successCallback, errorCallback)
+                },
                 userSignIn(email, password, code, successCallback, errorCallback) {
                     this._generic('user/register', 'post', { email: email, password: password, code: code }, successCallback, errorCallback)
                 },

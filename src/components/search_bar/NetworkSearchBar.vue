@@ -1,18 +1,6 @@
 <template>
-    <q-select
-        :value="model"
-        outlined
-        dense
-        use-input
-        :label="placeholder"
-        :options="options"
-        @filter="filter"
-        hide-dropdown-icon
-        input-debounce="1000"
-        :bg-color="bg"
-        :label-color="label"
-        :input-class="input"
-    >
+    <q-select :value="model" outlined dense use-input :label="placeholder" :options="options" @filter="filter"
+        hide-dropdown-icon input-debounce="500" :bg-color="bg" :label-color="label" :input-class="input">
         <template v-slot:append>
             <div v-if="!loading">
                 <q-icon :color="label" name="fas fa-search q-mb-sm" style="font-size: 0.8em" />
@@ -23,16 +11,13 @@
         </template>
         <template v-slot:loading> </template>
         <template v-slot:option="scope">
-            <q-item v-if="scope.opt.type == 'asn'" v-bind="scope.itemProps" v-on="scope.itemEvents" @click="gotoASN(scope.opt.value)">
+            <q-item v-if="scope.opt.type == 'asn'" v-bind="scope.itemProps" v-on="scope.itemEvents"
+                @click="gotoASN(scope.opt.value)">
                 <q-item-section side color="accent">{{ scope.opt.value | ihr_NumberToAsOrIxp }}</q-item-section>
                 <q-item-section class="IHR_asn-element-name">{{ scope.opt.name }}</q-item-section>
             </q-item>
-            <q-item
-                v-else-if="scope.opt.type == 'country'"
-                v-bind="scope.itemProps"
-                v-on="scope.itemEvents"
-                @click="gotoCountry(scope.opt.value)"
-            >
+            <q-item v-else-if="scope.opt.type == 'country'" v-bind="scope.itemProps" v-on="scope.itemEvents"
+                @click="gotoCountry(scope.opt.value)">
                 <q-item-section side color="accent"> Country </q-item-section>
                 <q-item-section class="IHR_asn-element-name">{{ scope.opt.name }}</q-item-section>
             </q-item>

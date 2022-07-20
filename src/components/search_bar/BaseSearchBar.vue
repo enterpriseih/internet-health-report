@@ -1,19 +1,6 @@
 <template>
-    <q-select
-        ref="search"
-        :dark="dark"
-        dense
-        standout
-        use-input
-        hide-selected
-        color="black"
-        :stack-label="false"
-        :label="placeholder"
-        v-model="text"
-        :options="options"
-        @filter="filter"
-        class="IHR_search-bar"
-    >
+    <q-select ref="search" :dark="dark" dense standout use-input hide-selected color="black" :stack-label="false"
+        :label="placeholder" v-model="text" :options="options" @filter="filter" class="IHR_search-bar">
         <template v-slot:prepend>
             <q-icon name="fas fa-search" style="font-size: 0.82em; margin-rigth: 4px" />
         </template>
@@ -81,7 +68,6 @@ export default {
             if (value == null) return
             if (value.length >= MIN_CHARACTERS) {
                 update(() => {
-                    this.value = null
                     this.debouncedSearch(value)
                 })
             }
@@ -113,4 +99,5 @@ export { MAX_RESULTS }
     & > *
       margin-right 0px
       padding-right 0px
+
 </style>

@@ -2,7 +2,7 @@
     <div>
         <div id="IHR_contact-page">
             <div class="Subscribe">
-                <h6>ressources</h6>
+                <h6>resources</h6>
                 <p v-if="tags.length == 0" class="IHR_description">Your resources</p>
                 <div v-else class="tag">
                     <el-tag v-for="(item, index) in tags" :key="index" type="warning" style="margin: 5px 8px"
@@ -24,12 +24,14 @@
                     { label: 'cities', value: 'city' },
                     { label: 'networks', value: 'network' },
                 ]" />
-                <q-input v-model="word" outlined style="width: 40%; margin: 30px 0 20px 0" placeholder="search resource"
+                <!-- <q-input v-model="word" outlined style="width: 40%; margin: 30px 0 20px 0" placeholder="search resource"
                     @keyup.enter="searchChange(word)">
                     <template v-slot:append>
                         <q-icon name="search" @click="searchChange(word)" color="blue" style="cursor: pointer" />
                     </template>
-                </q-input>
+                </q-input> -->
+                <select-search-bar class="col-3 q-px-sm" :type="panel" @searchRes="searchChange"
+                    style="margin: 20px 0;" />
                 <q-tab-panels v-model="panel" animated style="border-top: 1px solid #ccc">
                     <q-tab-panel name="country">
                         <div class="btn_list">
@@ -66,9 +68,12 @@
     </div>
 </template>
 <script>
+import SelectSearchBar from "@/components/search_bar/SelectSearchBar";
 export default {
     name: 'SelectPage',
-    components: {},
+    components: {
+        SelectSearchBar
+    },
     data() {
         return {
             tags: [],
@@ -100,8 +105,9 @@ export default {
         handleClose(tag) {
             this.tags.splice(this.tags.indexOf(tag), 1)
         },
-        searchChange(val) {
-            this.getChannel(this.panel, val)
+        searchChange(data) {
+            console.log(data)
+            this.getChannel(this.panel, data)
         },
         changePanel(val) {
             this.word = ''
