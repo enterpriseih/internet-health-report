@@ -5,7 +5,7 @@
                 <h6>Subscribe settings</h6>
                 <div class="group">
                     <q-btn outline color="orange-5" label="back" @click="$router.back()" no-caps />
-                    <q-btn color="orange-5" label="save" @click="saveChannel()" no-caps />
+                    <q-btn color="orange-5" unelevated label="save" @click="saveChannel()" no-caps />
                 </div>
             </div>
             <div class="verbosity">
