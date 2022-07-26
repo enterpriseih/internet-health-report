@@ -85,8 +85,19 @@ export default {
     },
     mounted() {
         this.getChannel(this.panel, this.word)
+        this.oldChannel()
     },
     methods: {
+        oldChannel() {
+            this.$ihr_api.getChannel(
+                res => {
+                    console.log(res)
+                    this.tags = res.data.channel
+                },
+                error => {
+                    console.log(error)
+                });
+        },
         getChannel(type, content) {
             this.$ihr_api.searchChannel(type, content,
                 res => {
@@ -125,7 +136,7 @@ export default {
                 path: '/en-us/setting',
                 query: { data: JSON.stringify(this.tags) },
             })
-            window.open(routeUrl.href, '_blank')
+            window.open(routeUrl.href, '_self')
         },
     },
 }

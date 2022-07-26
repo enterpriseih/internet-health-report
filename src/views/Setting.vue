@@ -3,7 +3,10 @@
         <div id="IHR_contact-page">
             <div class="subscribe">
                 <h6>Subscribe settings</h6>
-                <q-btn class="savebnt" color="orange-5" label="save" @click="saveChannel()" no-caps />
+                <div class="group">
+                    <q-btn outline color="orange-5" label="back" @click="$router.back()" no-caps />
+                    <q-btn color="orange-5" label="save" @click="saveChannel()" no-caps />
+                </div>
             </div>
             <div class="verbosity">
                 <p class="title">Verbosity</p>
@@ -103,11 +106,16 @@ export default {
     font-weight: 500;
 }
 
-.savebnt {
+
+.group {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-end;
     position: absolute;
-    width: 100px;
-    height: 38px;
-    top: 0;
+    height: 100px;
+    width: 220px;
+    bottom: 25px;
     right: 0;
 }
 
