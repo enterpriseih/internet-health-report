@@ -3,7 +3,7 @@
         <div id="IHR_contact-page">
             <div class="subscribe">
                 <h6>Subscribe settings</h6>
-                <div class="group">
+                <div class="group_setting">
                     <q-btn outline color="orange-5" label="back" @click="$router.back()" no-caps />
                     <q-btn color="orange-5" unelevated label="save" @click="saveChannel()" no-caps />
                 </div>
@@ -107,7 +107,7 @@ export default {
 }
 
 
-.group {
+.group_setting {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
@@ -117,6 +117,11 @@ export default {
     width: 220px;
     bottom: 25px;
     right: 0;
+}
+
+.group_setting .q-btn {
+    width: 100px;
+    height: 38px;
 }
 
 .item {

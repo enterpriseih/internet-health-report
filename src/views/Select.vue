@@ -2,7 +2,7 @@
     <div>
         <div id="IHR_contact-page">
             <div class="Subscribe">
-                <h6>resources</h6>
+                <h6>Subscribe resources</h6>
                 <p v-if="tags.length == 0" class="IHR_description">Your resources</p>
                 <div v-else class="tag">
                     <el-tag v-for="(item, index) in tags" :key="index" type="warning" style="margin: 5px 8px"
@@ -10,10 +10,9 @@
                         {{ item.channel.split(' ')[0] }}
                     </el-tag>
                 </div>
-                <q-btn v-if="flag" class="subbnt" color="orange-5" unelevated label="subscribe" @click="subscribe()"
-                    no-caps />
-                <div v-else class="group">
-                    <q-btn outline color="orange-5" label="edit" @click="edit()" no-caps />
+                <div class="group_select">
+                    <q-btn style="width:120px" outline color="orange-5" label="save resource" @click="saveResource()"
+                        no-caps />
                     <q-btn color="orange-5" unelevated label="setting" @click="toSetting()" no-caps />
 
                 </div>
@@ -65,6 +64,21 @@
         <div class="IHR_background" :style="{
             backgroundImage: 'url(' + require('@/assets/imgs/ihr_logo.svg') + ')',
         }"></div>
+        <q-dialog v-model="emailSent">
+            <q-card style="width: 300px">
+                <q-card-section>
+                    <div class="text-h6">Alert</div>
+                </q-card-section>
+
+                <q-card-section class="q-pt-none">
+                    {{ message }}
+                </q-card-section>
+
+                <q-card-actions align="right" class="bg-white text-teal">
+                    <q-btn flat label="OK" v-close-popup />
+                </q-card-actions>
+            </q-card>
+        </q-dialog>
     </div>
 </template>
 <script>
@@ -80,7 +94,9 @@ export default {
             panel: 'country',
             word: '',
             flag: true,
+            emailSent: false,
             dataList: [],
+            message: ''
         }
     },
     mounted() {
@@ -92,7 +108,9 @@ export default {
             this.$ihr_api.getChannel(
                 res => {
                     console.log(res)
-                    this.tags = res.data.channel
+                    if (res.hasOwnProperty('data')) {
+                        this.tags = res.data.channel
+                    }
                 },
                 error => {
                     console.log(error)
@@ -125,11 +143,20 @@ export default {
             this.getChannel(val, this.word)
 
         },
-        subscribe() {
-            this.flag = false
-        },
-        edit() {
-            this.flag = true
+        saveResource() {
+            this.$ihr_api.saveChannel(this.tags,
+                res => {
+                    if (res.code === 200) {
+                        this.emailSent = true
+                        this.message = 'save successfully!'
+                    } else {
+                        this.emailSent = true
+                        this.message = res.msg
+                    }
+                },
+                error => {
+                    console.log(error)
+                });
         },
         toSetting() {
             let routeUrl = this.$router.resolve({
@@ -181,19 +208,19 @@ export default {
     right: 0;
 }
 
-.group {
+.group_select {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: flex-end;
     position: absolute;
     height: 100px;
-    width: 220px;
+    width: 240px;
     bottom: 25px;
     right: 0;
 }
 
-.group .q-btn {
+.group_select .q-btn {
     width: 100px;
     height: 38px;
 }
