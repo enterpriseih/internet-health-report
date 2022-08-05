@@ -6,7 +6,7 @@
                 <p v-if="tags.length == 0" class="IHR_description">Your resources</p>
                 <div v-else class="tag">
                     <el-tag v-for="(item, index) in tags" :key="index" type="warning" style="margin: 5px 8px"
-                        @close="handleClose(item)" :closable="flag">
+                        @close="handleClose(item)" closable>
                         {{ item.channel.split(' ')[0] }}
                     </el-tag>
                 </div>
@@ -93,7 +93,6 @@ export default {
             tags: [],
             panel: 'country',
             word: '',
-            flag: true,
             emailSent: false,
             dataList: [],
             message: ''
@@ -127,7 +126,9 @@ export default {
                 });
         },
         select(label) {
-            if (this.flag) {
+            let flag = true
+            flag = this.tags.find(item => item.channel === label)
+            if (!flag) {
                 this.tags.push({ channel: label, frequency: 'normal' })
             }
         },
@@ -159,11 +160,10 @@ export default {
                 });
         },
         toSetting() {
-            let routeUrl = this.$router.resolve({
+            this.$router.push({
                 path: '/en-us/setting',
                 query: { data: JSON.stringify(this.tags) },
             })
-            window.open(routeUrl.href, '_self')
         },
     },
 }
@@ -263,7 +263,7 @@ export default {
     justify-content: flex-start;
     align-content: space-between;
     flex-wrap: wrap;
-    width: 80%;
+    width: 78%;
     min-height: 46px;
 }
 
