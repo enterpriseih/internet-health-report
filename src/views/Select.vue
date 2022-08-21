@@ -165,7 +165,21 @@ export default {
             this.tags.splice(this.tags.indexOf(tag), 1)
         },
         searchChange(data) {
-            this.dataList = [data]
+            if (data) {
+                this.dataList = [data]
+            } else {
+                switch (this.panel) {
+                    case 'country':
+                        this.dataList = this.country
+                        break
+                    case 'city':
+                        this.dataList = this.city
+                        break
+                    case 'network':
+                        this.dataList = this.network
+                        break
+                }
+            }
         },
         changePanel(val) {
             this.word = ''
