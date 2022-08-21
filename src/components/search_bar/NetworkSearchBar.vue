@@ -67,6 +67,7 @@ export default {
         search(value, update) {
             this.loading = true
             this.options = []
+
             this.countryQuery.containsName(value)
             this.$ihr_api.country(this.countryQuery, result => {
                 result.results.some(element => {

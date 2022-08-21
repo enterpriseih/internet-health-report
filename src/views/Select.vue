@@ -95,12 +95,51 @@ export default {
             word: '',
             emailSent: false,
             dataList: [],
-            message: ''
+            message: '',
+            country: ['Japan',
+                'France',
+                'United States',
+                'Brazil',
+                'Germany',
+                'China',
+                'Singapore',
+                'Canada',
+                'Netherlands',
+                'United Kingdom',
+                'Russia',
+                'Australia'
+            ],
+            city: ['Amsterdam North Holland NL',
+                'Ashburn Virginia US',
+                'London England GB',
+                'Singapore Central Singapore SG',
+                'Hong Kong Central and Western HK',
+                'Frankfurt am Main Hesse DE',
+                'Paris Île - de - France FR',
+                'Los Angeles California US',
+                'Tokyo Tokyo JP',
+                'Sydney New South Wales AU',
+                'New York City New York US',
+                'Toronto Ontario CA',
+            ],
+            network: ['AS3356 - Lumen',
+                'AS2914 - NTT',
+                'AS6939 - HE',
+                'AS1299 - Telia',
+                'AS174  - Cogent',
+                'AS15169 - Google',
+                'AS20940 - Akamai',
+                'AS16509 - Amazon',
+                'AS13335 - Cloudflare',
+                'AS32934 - Facebook',
+                'AS7922  - Comcast',
+                'AS8075  - Microsoft'
+            ]
         }
     },
     mounted() {
-        this.getChannel(this.panel, this.word)
         this.oldChannel()
+        this.dataList = this.country
     },
     methods: {
         oldChannel() {
@@ -110,16 +149,6 @@ export default {
                     if (res.hasOwnProperty('data')) {
                         this.tags = res.data.channel
                     }
-                },
-                error => {
-                    console.log(error)
-                });
-        },
-        getChannel(type, content) {
-            this.$ihr_api.searchChannel(type, content,
-                res => {
-                    console.log(res)
-                    this.dataList = res.data
                 },
                 error => {
                     console.log(error)
@@ -136,13 +165,22 @@ export default {
             this.tags.splice(this.tags.indexOf(tag), 1)
         },
         searchChange(data) {
-            console.log(data)
-            this.getChannel(this.panel, data)
+            this.dataList = [data]
         },
         changePanel(val) {
             this.word = ''
-            this.getChannel(val, this.word)
-
+            console.log(val)
+            switch (val) {
+                case 'country':
+                    this.dataList = this.country
+                    break
+                case 'city':
+                    this.dataList = this.city
+                    break
+                case 'network':
+                    this.dataList = this.network
+                    break
+            }
         },
         saveResource() {
             this.$ihr_api.saveChannel(this.tags,

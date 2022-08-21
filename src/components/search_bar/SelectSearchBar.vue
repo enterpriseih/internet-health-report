@@ -35,7 +35,7 @@
 </template>
 
 <script>
-
+import { NetworkDelayLocation, CountryQuery } from '@/plugins/IhrApi'
 const MIN_CHARACTERS = 1
 const MAX_RESULTS = 5
 
@@ -67,19 +67,48 @@ export default {
             model: '',
             loading: false,
             always: false,
+            networkDelayLocation: new NetworkDelayLocation().orderedByName(),
+            countryQuery: new CountryQuery().orderedByCode(),
         }
     },
     methods: {
         search(value, type, update) {
             this.loading = true
             this.options = []
-            this.$ihr_api.searchChannelPrefix(type, value, res => {
-                setTimeout(() => {
-                    this.options = res.data
-                    this.loading = false
-                    update()
-                }, 1000)
-            })
+            if (type === 'country') {
+                this.countryQuery.containsName(value)
+                this.$ihr_api.country(this.countryQuery, result => {
+                    setTimeout(() => {
+                        this.loading = false
+                        result.results.some(element => {
+                            this.options.push(element.name)
+                        })
+                        update()
+                    }, 1000)
+                }, error => {
+                    console.error(error)
+                })
+            } else {
+                this.networkDelayLocation.name(value)
+                if (type === 'city') {
+                    this.networkDelayLocation.type('CT')
+                }
+                this.$ihr_api.network_delay_location(
+                    this.networkDelayLocation,
+                    result => {
+                        setTimeout(() => {
+                            this.loading = false
+                            result.results.some(element => {
+                                this.options.push(element.name)
+                            })
+                            update()
+                        }, 1000)
+                    },
+                    error => {
+                        console.error(error)
+                    }
+                )
+            }
         },
         filter(value, update, abort) {
             if (value.length < MIN_CHARACTERS) {
