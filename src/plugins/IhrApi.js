@@ -378,6 +378,9 @@ const IhrApi = {
                 sendsendregisteremail(email, successCallback, errorCallback) {
                     this._generic('user/sendregisteremail', 'post', { email: email }, successCallback, errorCallback)
                 },
+                searchNetwork(name, successCallback, errorCallback) {
+                    this._generic(`networks/?name=${name}`, 'get', {}, successCallback, errorCallback)
+                },
                 userLogin(email, password, successCallback, errorCallback) {
                     this._generic(
                         'user/login',

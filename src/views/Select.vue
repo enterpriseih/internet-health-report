@@ -7,7 +7,7 @@
                 <div v-else class="tag">
                     <el-tag v-for="(item, index) in tags" :key="index" type="warning" style="margin: 5px 8px"
                         @close="handleClose(item)" closable>
-                        {{ item.channel.split(' ')[0] }}
+                        {{ item.channel.split(',')[0] }}
                     </el-tag>
                 </div>
                 <div class="group_select">
@@ -35,7 +35,7 @@
                     <q-tab-panel name="country">
                         <div class="btn_list">
                             <q-btn outline v-for="(item, index) in dataList" :key="index" color="white"
-                                text-color="black" :label="item.split(' ')[0]" @click="select(item)" no-caps>
+                                text-color="black" :label="item.split(',')[0]" @click="select(item)" no-caps>
                                 <q-tooltip class="bg-accent">{{ item }}</q-tooltip>
                             </q-btn>
                         </div>
@@ -44,7 +44,7 @@
                     <q-tab-panel name="city">
                         <div class="btn_list">
                             <q-btn outline v-for="(item, index) in dataList" :key="index" color="white"
-                                text-color="black" :label="item.split(' ')[0]" @click="select(item)" no-caps>
+                                text-color="black" :label="item.split(',')[0]" @click="select(item)" no-caps>
                                 <q-tooltip class="bg-accent">{{ item }}</q-tooltip>
                             </q-btn>
                         </div>
@@ -53,7 +53,7 @@
                     <q-tab-panel name="network">
                         <div class="btn_list">
                             <q-btn outline v-for="(item, index) in dataList" :key="index" color="white"
-                                text-color="black" :label="item.split(' ')[0]" @click="select(item)" no-caps>
+                                text-color="black" :label="item.split(',')[0]" @click="select(item)" no-caps>
                                 <q-tooltip class="bg-accent">{{ item }}</q-tooltip>
                             </q-btn>
                         </div>
@@ -109,18 +109,18 @@ export default {
                 'Russia',
                 'Australia'
             ],
-            city: ['Amsterdam North Holland NL',
-                'Ashburn Virginia US',
-                'London England GB',
-                'Singapore Central Singapore SG',
-                'Hong Kong Central and Western HK',
-                'Frankfurt am Main Hesse DE',
-                'Paris Île - de - France FR',
-                'Los Angeles California US',
-                'Tokyo Tokyo JP',
-                'Sydney New South Wales AU',
-                'New York City New York US',
-                'Toronto Ontario CA',
+            city: ['Amsterdam, North Holland NL',
+                'Ashburn, Virginia US',
+                'London, England GB',
+                'Singapore, Central Singapore SG',
+                'Hong Kong, Central and Western HK',
+                'Frankfurt am Main, Hesse DE',
+                'Paris, Île - de - France FR',
+                'Los Angeles, California US',
+                'Tokyo, Tokyo JP',
+                'Sydney, New South Wales AU',
+                'New York City, New York US',
+                'Toronto, Ontario CA',
             ],
             network: ['AS3356 - Lumen',
                 'AS2914 - NTT',

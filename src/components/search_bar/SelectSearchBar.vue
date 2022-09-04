@@ -88,13 +88,27 @@ export default {
                 }, error => {
                     console.error(error)
                 })
-            } else {
+            } else if (type === 'city') {
                 this.networkDelayLocation.name(value)
-                if (type === 'city') {
-                    this.networkDelayLocation.type('CT')
-                }
+                this.networkDelayLocation.type('CT')
                 this.$ihr_api.network_delay_location(
                     this.networkDelayLocation,
+                    result => {
+                        setTimeout(() => {
+                            this.loading = false
+                            result.results.some(element => {
+                                this.options.push(element.name)
+                            })
+                            update()
+                        }, 1000)
+                    },
+                    error => {
+                        console.error(error)
+                    }
+                )
+            } else {
+                this.$ihr_api.searchNetwork(
+                    value,
                     result => {
                         setTimeout(() => {
                             this.loading = false

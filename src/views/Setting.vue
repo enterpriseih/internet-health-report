@@ -12,7 +12,7 @@
                 <p class="title">Verbosity</p>
                 <div v-for="(item, index) in dataList" :key="index" class="item">
                     <div style="width:200px">
-                        <el-tag type="warning">{{ item.channel.split(' ')[0] }}</el-tag>
+                        <el-tag type="warning">{{ item.channel.split(',')[0] }}</el-tag>
                     </div>
                     <q-btn-toggle v-model="item.frequency" rounded unelevated class="toggle" toggle-color="positive"
                         :options="[
