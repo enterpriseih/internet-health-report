@@ -35,7 +35,8 @@
                     <q-tab-panel name="country">
                         <div class="btn_list">
                             <q-btn outline v-for="(item, index) in dataList" :key="index" color="white"
-                                text-color="black" :label="item.split(',')[0]" @click="select(item)" no-caps>
+                                style="width:150px!important;" text-color="black" :label="item.split(',')[0]"
+                                @click="select(item)" no-caps>
                                 <q-tooltip class="bg-accent">{{ item }}</q-tooltip>
                             </q-btn>
                         </div>
@@ -44,7 +45,8 @@
                     <q-tab-panel name="city">
                         <div class="btn_list">
                             <q-btn outline v-for="(item, index) in dataList" :key="index" color="white"
-                                text-color="black" :label="item.split(',')[0]" @click="select(item)" no-caps>
+                                style="width:150px!important;" text-color="black" :label="item.split(',')[0]"
+                                @click="select(item)" no-caps>
                                 <q-tooltip class="bg-accent">{{ item }}</q-tooltip>
                             </q-btn>
                         </div>
@@ -53,7 +55,8 @@
                     <q-tab-panel name="network">
                         <div class="btn_list">
                             <q-btn outline v-for="(item, index) in dataList" :key="index" color="white"
-                                text-color="black" :label="item.split(',')[0]" @click="select(item)" no-caps>
+                                style="width:175px!important;" text-color="black" :label="item.split(',')[0]"
+                                @click="select(item)" no-caps>
                                 <q-tooltip class="bg-accent">{{ item }}</q-tooltip>
                             </q-btn>
                         </div>
